@@ -1,0 +1,117 @@
+﻿using BetThanYes.Application.DTOs.User;
+using BetThanYes.Application.Services.Interfaces;
+using BetThanYes.Domain.Interfaces;
+using BetThanYes.Domain.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace BetThanYes.Application.Services
+{
+    public class UserService : IUserService
+    {
+        private readonly IUserRepository _repository;
+
+        public UserService(IUserRepository repository)
+        {
+            _repository = repository;
+        }
+
+        public async Task<UserDto> CreateAsync(CreateUserDto dto)
+        {
+            var user = new User
+            {
+                Id = Guid.NewGuid(),
+                FullName = dto.FullName,
+                Email = dto.Email,
+                PasswordHash = dto.Password,
+                BirthDate = dto.BirthDate,
+                Gender = dto.Gender,
+                TimeZone = dto.TimeZone,
+                ProfilePictureUrl = dto.ProfilePictureUrl,
+                CustomMotivationalQuote = dto.CustomMotivationalQuote,
+                RegistrationDate = DateTime.UtcNow,
+                IsActive = true,
+                MotivationScore = 0
+            };
+
+            await _repository.AddAsync(user);
+
+            return new UserDto
+            {
+                Id = user.Id,
+                UserNumber = user.UserNumber,
+                FullName = user.FullName,
+                Email = user.Email,
+                BirthDate = user.BirthDate,
+                Gender = user.Gender,
+                TimeZone = user.TimeZone,
+                ProfilePictureUrl = user.ProfilePictureUrl,
+                CustomMotivationalQuote = user.CustomMotivationalQuote,
+                RegistrationDate = user.RegistrationDate,
+                IsActive = user.IsActive,
+                MotivationScore = user.MotivationScore
+            };
+        }
+
+        public async Task DeleteAsync(Guid id) => await _repository.DeleteAsync(id);
+
+        //public async Task<IEnumerable<UserDto>> GetAllAsync()
+        //{
+        //    var users = await _repository.GetAllAsync();
+        //    return users.Select(user => new UserDto
+        //    {
+        //        Id = user.Id,
+        //        UserNumber = user.UserNumber,
+        //        FullName = user.FullName,
+        //        Email = user.Email,
+        //        BirthDate = user.BirthDate,
+        //        Gender = user.Gender,
+        //        TimeZone = user.TimeZone,
+        //        ProfilePictureUrl = user.ProfilePictureUrl,
+        //        CustomMotivationalQuote = user.CustomMotivationalQuote,
+        //        RegistrationDate = user.RegistrationDate,
+        //        IsActive = user.IsActive,
+        //        MotivationScore = user.MotivationScore
+        //    });
+        //}
+
+        public async Task<UserDto?> GetByIdAsync(Guid id)
+        {
+            var user = await _repository.GetByIdAsync(id);
+            if (user == null) return null;
+
+            return new UserDto
+            {
+                Id = user.Id,
+                UserNumber = user.UserNumber,
+                FullName = user.FullName,
+                Email = user.Email,
+                BirthDate = user.BirthDate,
+                Gender = user.Gender,
+                TimeZone = user.TimeZone,
+                ProfilePictureUrl = user.ProfilePictureUrl,
+                CustomMotivationalQuote = user.CustomMotivationalQuote,
+                RegistrationDate = user.RegistrationDate,
+                IsActive = user.IsActive,
+                MotivationScore = user.MotivationScore
+            };
+        }
+
+        public async Task UpdateAsync(UpdateUserDto dto)
+        {
+            var user = await _repository.GetByIdAsync(dto.Id);
+            if (user == null) return;
+
+            user.FullName = dto.FullName;
+            user.BirthDate = dto.BirthDate;
+            user.Gender = dto.Gender;
+            user.TimeZone = dto.TimeZone;
+            user.ProfilePictureUrl = dto.ProfilePictureUrl;
+            user.CustomMotivationalQuote = dto.CustomMotivationalQuote;
+
+            await _repository.UpdateAsync(user);
+        }
+    }
+}
