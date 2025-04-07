@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace BetThanYes.Application.DTOs.User
+namespace BetThanYes.Application.DTOs.Request.User
 {
-    public class UserDto
+    public class UserResponse
     {
         public Guid Id { get; set; }
         public long UserNumber { get; set; }

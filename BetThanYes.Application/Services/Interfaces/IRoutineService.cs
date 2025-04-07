@@ -1,4 +1,5 @@
-﻿using BetThanYes.Application.DTOs.Routine;
+﻿using BetThanYes.Application.DTOs.Request.Routine;
+using BetThanYes.Application.DTOs.Response.Routine;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -7,10 +8,10 @@ namespace BetThanYes.Application.Services.Interfaces
 {
     public interface IRoutineService
     {
-        Task<RoutineDto?> GetByIdAsync(Guid id);
-        Task<IEnumerable<RoutineDto>> GetAllByUserIdAsync(Guid userId);
-        Task<RoutineDto> CreateAsync(CreateRoutineDto dto);
-        Task UpdateAsync(UpdateRoutineDto dto);
-        Task DeleteAsync(Guid id);
+        //Task<RoutineResponse?> GetByIdAsync(Guid id);
+        //Task<IEnumerable<RoutineResponse>> GetAllByUserIdAsync(Guid userId);
+        Task<CreateRoutineResponse> CreateAsync(CreateRoutineDto dto);
+        //Task UpdateAsync(UpdateRoutineResponse dto);
+        //Task DeleteAsync(Guid id);
     }
 }

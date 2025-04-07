@@ -2,6 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BetThanYes.Domain\BetThanYes.Domain.csproj" />
+    <ProjectReference Include="..\BetThanYes.Infrastructure\BetThanYes.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>

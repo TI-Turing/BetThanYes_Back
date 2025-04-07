@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace BetThanYes.Application.DTOs.Routine
+namespace BetThanYes.Application.DTOs.Request.Routine
 {
-    public class  RoutineDto
+    public class  RoutineResponse
     {
         public Guid Id { get; set; }
         public long RoutineNumber { get; set; }

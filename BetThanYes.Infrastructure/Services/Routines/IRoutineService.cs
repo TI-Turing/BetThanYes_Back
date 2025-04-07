@@ -1,13 +1,15 @@
-﻿//using BetThanYes.Domain.Entities;
-using BetThanYes.Domain.Models;
+﻿using BetThanYes.Domain.Models;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace BetThanYes.Infrastructure.Services.Routines
 {
-    public interface IUserService
+    public interface IRoutineRepository
     {
-        Task<IEnumerable<Routine>> GetAllAsync(Guid userId);
         Task<Routine?> GetByIdAsync(Guid id);
-        Task CreateAsync(Routine routine);
+        Task<IEnumerable<Routine>> GetAllByUserIdAsync(Guid userId);
+        Task AddAsync(Routine routine);
         Task UpdateAsync(Routine routine);
         Task DeleteAsync(Guid id);
     }

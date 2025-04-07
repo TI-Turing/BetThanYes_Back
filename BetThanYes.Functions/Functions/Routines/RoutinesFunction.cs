@@ -1,13 +1,12 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
-using Microsoft.Extensions.Logging;
-using BetThanYes.Application.Services.Interfaces;
 using Microsoft.Azure.Functions.Worker.Http;
-using BetThanYes.Application.DTOs.Routine;
+using BetThanYes.Application.Services.Interfaces;
+using BetThanYes.Application.DTOs.Request.Routine;
+using BetThanYes.Domain.Models;
+using BetThanYes.Application.DTOs.Response.Routine;
 
-
-namespace BetThanYes.Functions
+namespace BetThanYes.Functions.Functions.Routines
 {
     public class RoutinesFunction
     {
@@ -19,25 +18,40 @@ namespace BetThanYes.Functions
         }
 
         [Function("CreateRoutine")]
-        public async Task<IActionResult> CreateRoutine(
-            [HttpTrigger(AuthorizationLevel.Function,  "post")] HttpRequestData req, FunctionContext executionContext)
+        public async Task<ApiResponse<CreateRoutineResponse>> CreateRoutine(
+            [HttpTrigger(AuthorizationLevel.Function, "post")] HttpRequestData req)
         {
+            var response = new ApiResponse<CreateRoutineResponse>();
+
             try
             {
                 var requestBody = await req.ReadFromJsonAsync<CreateRoutineDto>();
 
                 if (requestBody == null)
-                    return new BadRequestObjectResult("Invalid request.");
+                {
+                    response.Success = false;
+                    response.Message = "Solicitud inválida.";
+                    response.StatusCode = StatusCodes.Status400BadRequest;
+                    return response;
+                }
 
                 var result = await _routineService.CreateAsync(requestBody);
-                return new OkObjectResult(result);
+
+                response.Data = new CreateRoutineResponse();
+                response.Data.Id = result.Id;
+                response.Success = true;
+                response.Message = "Rutina creada exitosamente.";
+                response.StatusCode = StatusCodes.Status200OK;
+
+                return response;
             }
             catch (Exception ex)
             {
-                return new ObjectResult(new { message = ex.Message }) { StatusCode = 500 };
+                response.Success = false;
+                response.Message = ex.Message;
+                response.StatusCode = StatusCodes.Status500InternalServerError;
+                return response;
             }
         }
-
-        // Puedes agregar aquí GetAll, GetById, Update, Delete si quieres que avancemos con eso.
     }
 }

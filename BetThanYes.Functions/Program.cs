@@ -5,9 +5,10 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Extensions.Http;
-using BetThanYes.Domain.Interfaces;
-using BetThanYes.Infrastructure.Repositories;
 using BetThanYes.Infrastructure.Database;
+using BetThanYes.Infrastructure.Services.Files;
+using BetThanYes.Infrastructure.Services.Users;
+using BetThanYes.Infrastructure.Services.Routines;
 
 
 var host = new HostBuilder()
@@ -28,12 +29,14 @@ var host = new HostBuilder()
         services.AddSingleton(new SqlDbContext(connectionString));
 
         // Agregar servicios
-        services.AddScoped<IRoutineService, RoutineService>();
-        services.AddScoped<IRoutineRepository, RoutineRepository>();
+        services.AddScoped<IRoutineService, RoutineService>();//App
+        services.AddScoped<IRoutineRepository, RoutineRepository>();//Infraestructure
 
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IUserRepository, UserRepository>();
 
+        services.AddScoped<IFileService, FileService>();
+        services.AddScoped<IFileRepository, FileRepository>();
 
         // Aquí puedes seguir agregando más servicios si los necesitas
         // services.AddScoped<IUserService, UserService>();

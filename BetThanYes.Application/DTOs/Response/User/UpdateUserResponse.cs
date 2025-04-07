@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace BetThanYes.Application.DTOs.User
+namespace BetThanYes.Application.DTOs.Response.User
 {
-    public class UpdateUserDto
+    public class UpdateUserResponse
     {
         public Guid Id { get; set; }
         public string FullName { get; set; } = null!;

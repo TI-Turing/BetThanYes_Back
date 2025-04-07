@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BetThanYes.Application.DTOs.Routine
+namespace BetThanYes.Application.DTOs.Request.Routine
 {
     public class CreateRoutineDto
     {

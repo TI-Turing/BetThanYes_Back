@@ -1,7 +1,8 @@
-﻿using BetThanYes.Application.DTOs.Routine;
+﻿using BetThanYes.Application.DTOs.Request.Routine;
+using BetThanYes.Application.DTOs.Response.Routine;
 using BetThanYes.Application.Services.Interfaces;
-using BetThanYes.Domain.Interfaces;
 using BetThanYes.Domain.Models;
+using BetThanYes.Infrastructure.Services.Routines;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +20,7 @@ namespace BetThanYes.Application.Services
             _repository = repository;
         }
 
-        public async Task<RoutineDto> CreateAsync(CreateRoutineDto dto)
+        public async Task<CreateRoutineResponse> CreateAsync(CreateRoutineDto dto)
         {
             var routine = new Routine
             {
@@ -32,59 +33,55 @@ namespace BetThanYes.Application.Services
 
             await _repository.AddAsync(routine);
 
-            return new RoutineDto
+            return new CreateRoutineResponse
             {
                 Id = routine.Id,
-                RoutineNumber = routine.RoutineNumber,
-                UserId = routine.UserId,
-                Name = routine.RoutineName,
-                Description = routine.Description,
-                CreatedAt = routine.CreatedAt
+                RoutineNumber = routine.RoutineNumber
             };
         }
 
-        public async Task DeleteAsync(Guid id) => await _repository.DeleteAsync(id);
+        //public async Task DeleteAsync(Guid id) => await _repository.DeleteAsync(id);
 
-        public async Task<IEnumerable<RoutineDto>> GetAllByUserIdAsync(Guid userId)
-        {
-            var routines = await _repository.GetAllByUserIdAsync(userId);
+        //public async Task<IEnumerable<RoutineResponse>> GetAllByUserIdAsync(Guid userId)
+        //{
+        //    var routines = await _repository.GetAllByUserIdAsync(userId);
 
-            return routines.Select(r => new RoutineDto
-            {
-                Id = r.Id,
-                RoutineNumber = r.RoutineNumber,
-                UserId = r.UserId,
-                Name = r.RoutineName,
-                Description = r.Description,
-                CreatedAt = r.CreatedAt
-            });
-        }
+        //    return routines.Select(r => new RoutineResponse
+        //    {
+        //        Id = r.Id,
+        //        RoutineNumber = r.RoutineNumber,
+        //        UserId = r.UserId,
+        //        Name = r.RoutineName,
+        //        Description = r.Description,
+        //        CreatedAt = r.CreatedAt
+        //    });
+        //}
 
-        public async Task<RoutineDto?> GetByIdAsync(Guid id)
-        {
-            var routine = await _repository.GetByIdAsync(id);
-            if (routine == null) return null;
+        //public async Task<RoutineResponse?> GetByIdAsync(Guid id)
+        //{
+        //    var routine = await _repository.GetByIdAsync(id);
+        //    if (routine == null) return null;
 
-            return new RoutineDto
-            {
-                Id = routine.Id,
-                RoutineNumber = routine.RoutineNumber,
-                UserId = routine.UserId,
-                Name = routine.RoutineName,
-                Description = routine.Description,
-                CreatedAt = routine.CreatedAt
-            };
-        }
+        //    return new RoutineResponse
+        //    {
+        //        Id = routine.Id,
+        //        RoutineNumber = routine.RoutineNumber,
+        //        UserId = routine.UserId,
+        //        Name = routine.RoutineName,
+        //        Description = routine.Description,
+        //        CreatedAt = routine.CreatedAt
+        //    };
+        //}
 
-        public async Task UpdateAsync(UpdateRoutineDto dto)
-        {
-            var routine = await _repository.GetByIdAsync(dto.Id);
-            if (routine == null) return;
+        //public async Task UpdateAsync(UpdateRoutineDto dto)
+        //{
+        //    var routine = await _repository.GetByIdAsync(dto.Id);
+        //    if (routine == null) return;
 
-            routine.RoutineName = dto.Name;
-            routine.Description = dto.Description;
+        //    routine.RoutineName = dto.Name;
+        //    routine.Description = dto.Description;
 
-            await _repository.UpdateAsync(routine);
-        }
+        //    await _repository.UpdateAsync(routine);
+        //}
     }
 }

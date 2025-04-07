@@ -1,4 +1,5 @@
-﻿using BetThanYes.Application.DTOs.User;
+﻿using BetThanYes.Application.DTOs.Request.User;
+using BetThanYes.Application.DTOs.Response.User;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -7,10 +8,10 @@ namespace BetThanYes.Application.Services.Interfaces
 {
     public interface IUserService
     {
-        Task<UserDto?> GetByIdAsync(Guid id);
+        Task<CreateUserResponse?> GetByIdAsync(Guid id);
         //Task<IEnumerable<UserDto>> GetAllByUserIdAsync(Guid userId);
-        Task<UserDto> CreateAsync(CreateUserDto dto);
-        Task UpdateAsync(UpdateUserDto dto);
+        Task<CreateUserResponse> CreateAsync(CreateUserDto dto);
+        Task UpdateAsync(CreateUserDto dto);
         Task DeleteAsync(Guid id);
     }
 }

@@ -1,59 +1,82 @@
-﻿using Dapper;
-using Microsoft.Extensions.Configuration;
-using BetThanYes.Domain.Models;
+﻿using BetThanYes.Domain.Models;
 using BetThanYes.Infrastructure.Database;
-using System.Data;
+using Dapper;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace BetThanYes.Infrastructure.Services.Users
 {
-    public class UserService : IUserService
+    public class UserRepository : IUserRepository
     {
-        private readonly SqlDbContext _context;
+        private readonly SqlDbContext _dbContext;
 
-        public UserService(SqlDbContext context)
+        public UserRepository(SqlDbContext dbContext)
         {
-            _context = context;
+            _dbContext = dbContext;
         }
 
-        //public async Task<IEnumerable<User>> GetAllAsync()
-        //{
-        //    using var connection = _context.CreateConnection();
-        //    var sql = "SELECT * FROM Users";
-        //    return await connection.QueryAsync<User>(sql, new { });
-        //}
-
-        public async Task<User?> GetByIdAsync(Guid id)
+        public async Task AddAsync(User user)
         {
-            using var connection = _context.CreateConnection();
-            var sql = "SELECT * FROM Users WHERE Id = @Id";
-            return await connection.QueryFirstOrDefaultAsync<User>(sql, new { Id = id });
-        }
+            const string sql = @"
+                INSERT INTO [User] (
+                    Id, FullName, Email, PasswordHash, BirthDate, Gender,
+                    TimeZone, ProfilePictureUrl, CustomMotivationalQuote,
+                    RegistrationDate, IsActive, MotivationScore
+                )
+                VALUES (
+                    @Id, @FullName, @Email, @PasswordHash, @BirthDate, @Gender,
+                    @TimeZone, @ProfilePictureUrl, @CustomMotivationalQuote,
+                    @RegistrationDate, @IsActive, @MotivationScore
+                );
+            ";
 
-        public async Task CreateAsync(User user)
-        {
-            using var connection = _context.CreateConnection();
-            var sql = @"INSERT INTO Users (Id, UserId, UserName, Description, IsDefault)
-                        VALUES (@Id, @UserId, @UserName, @Description, @IsDefault)";
-            user.Id = Guid.NewGuid();
-            await connection.ExecuteAsync(sql, user);
-        }
-
-        public async Task UpdateAsync(User user)
-        {
-            using var connection = _context.CreateConnection();
-            var sql = @"UPDATE Users
-                        SET UserName = @UserName,
-                            Description = @Description,
-                            IsDefault = @IsDefault
-                        WHERE Id = @Id";
+            using var connection = _dbContext.CreateConnection();
             await connection.ExecuteAsync(sql, user);
         }
 
         public async Task DeleteAsync(Guid id)
         {
-            using var connection = _context.CreateConnection();
-            var sql = "DELETE FROM Users WHERE Id = @Id";
+            const string sql = "DELETE FROM Users WHERE Id = @Id;";
+            using var connection = _dbContext.CreateConnection();
             await connection.ExecuteAsync(sql, new { Id = id });
+        }
+
+        public async Task<IEnumerable<User>> GetAllByUserIdAsync(Guid userId)
+        {
+            const string sql = "SELECT * FROM Users WHERE Id = @UserId;";
+            using var connection = _dbContext.CreateConnection();
+            return await connection.QueryAsync<User>(sql, new { UserId = userId });
+        }
+
+        public async Task<User?> GetByIdAsync(Guid id)
+        {
+            const string sql = "SELECT * FROM Users WHERE Id = @Id;";
+            using var connection = _dbContext.CreateConnection();
+            return await connection.QueryFirstOrDefaultAsync<User>(sql, new { Id = id });
+        }
+
+        public async Task UpdateAsync(User user)
+        {
+            const string sql = @"
+                UPDATE Users
+                SET 
+                    FullName = @FullName,
+                    Email = @Email,
+                    PasswordHash = @PasswordHash,
+                    BirthDate = @BirthDate,
+                    Gender = @Gender,
+                    TimeZone = @TimeZone,
+                    ProfilePictureUrl = @ProfilePictureUrl,
+                    CustomMotivationalQuote = @CustomMotivationalQuote,
+                    LastLogin = @LastLogin,
+                    IsActive = @IsActive,
+                    MotivationScore = @MotivationScore
+                WHERE Id = @Id;
+            ";
+
+            using var connection = _dbContext.CreateConnection();
+            await connection.ExecuteAsync(sql, user);
         }
     }
 }
