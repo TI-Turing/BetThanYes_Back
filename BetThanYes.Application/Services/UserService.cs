@@ -23,14 +23,14 @@ namespace BetThanYes.Application.Services
             var user = new User
             {
                 Id = Guid.NewGuid(),
-                FullName = dto.FullName,
+                FullName = "",
                 Email = dto.Email,
                 PasswordHash = dto.Password,
-                BirthDate = dto.BirthDate,
-                Gender = dto.Gender,
-                TimeZone = dto.TimeZone,
-                ProfilePictureUrl = dto.ProfilePictureUrl,
-                CustomMotivationalQuote = dto.CustomMotivationalQuote,
+                BirthDate = DateTime.Now,
+                Gender = "",
+                TimeZone = "",
+                ProfilePictureUrl = "",
+                CustomMotivationalQuote = "",
                 RegistrationDate = DateTime.UtcNow,
                 IsActive = true,
                 MotivationScore = 0
