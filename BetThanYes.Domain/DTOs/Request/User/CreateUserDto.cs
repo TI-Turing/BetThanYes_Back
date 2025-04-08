@@ -1,4 +1,4 @@
-﻿namespace BetThanYes.Application.DTOs.Request.User;
+﻿namespace BetThanYes.Domain.DTOs.Request.User;
 public class CreateUserDto
 {
     public string Email { get; set; } = null!;

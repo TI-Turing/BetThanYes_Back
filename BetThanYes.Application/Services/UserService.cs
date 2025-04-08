@@ -1,5 +1,5 @@
-﻿using BetThanYes.Application.DTOs.Request.User;
-using BetThanYes.Application.DTOs.Response.User;
+﻿using BetThanYes.Domain.DTOs.Request.User;
+using BetThanYes.Domain.DTOs.Response.User;
 using BetThanYes.Application.Services.Interfaces;
 using BetThanYes.Domain.Models;
 using BetThanYes.Infrastructure.Services.Users;
@@ -96,19 +96,29 @@ namespace BetThanYes.Application.Services
             };
         }
 
-        public async Task UpdateAsync(CreateUserDto dto)
+        public async Task<UpdateUserResponse> UpdateAsync(UpdateUserDto dto)
         {
-            var user = await _repository.GetByIdAsync(new Guid());
-            if (user == null) return;
+            try
+            {
+                UpdateUserResponse response = new UpdateUserResponse();
+                var user = await _repository.GetByIdAsync(dto.Id);
 
-            //user.FullName = dto.FullName;
-            //user.BirthDate = dto.BirthDate;
-            //user.Gender = dto.Gender;
-            //user.TimeZone = dto.TimeZone;
-            //user.ProfilePictureUrl = dto.ProfilePictureUrl;
-            //user.CustomMotivationalQuote = dto.CustomMotivationalQuote;
+                if (user == null)
+                    response.Result = false;
 
-            await _repository.UpdateAsync(user);
+                user.FullName = dto.FullName;
+                user.BirthDate = dto.BirthDate;
+                user.Gender = dto.Gender;
+
+                await _repository.UpdateAsync(user);
+                response.Result = true;
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
     }
 }

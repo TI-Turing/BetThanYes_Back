@@ -10,7 +10,7 @@ using BetThanYes.Domain.Enums;
 using BetThanYes.Application.Services.Interfaces;
 using BetThanYes.Infrastructure.Services.Routines;
 using BetThanYes.Infrastructure.Services.Files;
-using BetThanYes.Application.DTOs.Request.File;
+using BetThanYes.Domain.DTOs.Request.File;
 //using BetThanYes.;
 
 namespace BetThanYes.Application.Services
@@ -58,7 +58,7 @@ namespace BetThanYes.Application.Services
                     _ => ".dat" // extensión por defecto para otros tipos
                 };
 
-                return await _repository.ProcessFile(fileBytes,userId.ToString(),fileType.ToString(),fileExtension, tempFolder);
+                return await _repository.ProcessFile(fileBytes, userId.ToString(), fileType.ToString(), fileExtension, tempFolder);
 
                 // Determina el contenedor según el tipo de archivo
                 //string containerName = file.FileType switch
@@ -71,12 +71,25 @@ namespace BetThanYes.Application.Services
 
 
 
-                
+
             }
             catch (Exception ex)
             {
                 // Log the exception (ex) here if needed
                 return "";
+            }
+        }
+
+        public async Task<bool> SaveFile(UploadFileDto uploadFileDto)
+        {
+            try
+            {
+                return await _repository.SaveFile(uploadFileDto);
+            }
+            catch (Exception ex)
+            {
+                // Log the exception (ex) here if needed
+                return false;
             }
         }
     }

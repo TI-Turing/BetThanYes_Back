@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BetThanYes.Application.DTOs.Request.File
+namespace BetThanYes.Domain.DTOs.Request.File
 {
     public class UploadFileDto
     {
@@ -13,5 +13,6 @@ namespace BetThanYes.Application.DTOs.Request.File
         public string Base64Content { get; set; } = string.Empty;
         public FileType FileType { get; set; }
         public Guid IdUser { get; set; }
+        public string ProfilePictureUrl { get; set; } = string.Empty;
     }
 }

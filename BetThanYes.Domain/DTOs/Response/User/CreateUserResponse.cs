@@ -1,4 +1,4 @@
-﻿namespace BetThanYes.Application.DTOs.Response.User;
+﻿namespace BetThanYes.Domain.DTOs.Response.User;
 
 public class CreateUserResponse
 {

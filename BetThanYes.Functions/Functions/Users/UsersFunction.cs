@@ -3,9 +3,9 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 using Microsoft.Azure.Functions.Worker.Http;
 using BetThanYes.Application.Services.Interfaces;
-using BetThanYes.Application.DTOs.Request.User;
+using BetThanYes.Domain.DTOs.Request.User;
 using BetThanYes.Domain.Models;
-using BetThanYes.Application.DTOs.Response.User;
+using BetThanYes.Domain.DTOs.Response.User;
 
 namespace BetThanYes.Functions.Functions.Users
 {
@@ -42,6 +42,43 @@ namespace BetThanYes.Functions.Functions.Users
                 response.Data.Id = result.Id;
                 response.Success = true;
                 response.Message = "Usuario creado exitosamente.";
+                response.StatusCode = StatusCodes.Status200OK;
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                response.Message = ex.Message;
+                response.StatusCode = StatusCodes.Status500InternalServerError;
+                return response;
+            }
+        }
+
+        [Function("UpdateUser")]
+        public async Task<ApiResponse<UpdateUserResponse>> UpdateUser(
+            [HttpTrigger(AuthorizationLevel.Function, "post")] HttpRequestData req)
+        {
+            var response = new ApiResponse<UpdateUserResponse>();
+
+            try
+            {
+                var requestBody = await req.ReadFromJsonAsync<UpdateUserDto>();
+
+                if (requestBody == null)
+                {
+                    response.Success = false;
+                    response.Message = "Solicitud inválida.";
+                    response.StatusCode = StatusCodes.Status400BadRequest;
+                    return response;
+                }
+
+                var result = await _userService.UpdateAsync(requestBody);
+
+                response.Data = new UpdateUserResponse();
+                response.Data.Result = result.Result;
+                response.Success = true;
+                response.Message = "Usuario actualizado exitosamente.";
                 response.StatusCode = StatusCodes.Status200OK;
 
                 return response;

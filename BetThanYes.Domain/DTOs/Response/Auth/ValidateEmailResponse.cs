@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BetThanYes.Infrastructure
+namespace BetThanYes.Domain.DTOs.Response.Auth
 {
-    internal class FileRepository
+    public class ValidateEmailResponse
     {
+        public bool Result { get; set; }
     }
 }

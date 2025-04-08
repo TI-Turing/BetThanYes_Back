@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BetThanYes.Application.DTOs.Request.User
+namespace BetThanYes.Domain.DTOs.Response.User
 {
     public class UserResponse
     {

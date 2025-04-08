@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BetThanYes.Application.DTOs.File
+namespace BetThanYes.Domain.DTOs.File
 {
     public class UploadFileResponse
     {

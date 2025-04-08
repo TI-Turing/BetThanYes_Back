@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BetThanYes.Application.DTOs.Response.Routine
+namespace BetThanYes.Domain.DTOs.Request.Routine
 {
     public class UpdateRoutineResponse
     {

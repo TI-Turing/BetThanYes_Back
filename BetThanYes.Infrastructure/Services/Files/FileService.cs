@@ -1,5 +1,8 @@
-﻿using BetThanYes.Domain.Enums;
+﻿using BetThanYes.Domain.DTOs.Request.File;
+using BetThanYes.Domain.Enums;
 using BetThanYes.Domain.Models;
+using BetThanYes.Infrastructure.Database;
+using Dapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +14,11 @@ namespace BetThanYes.Infrastructure.Services.Files
 {
     public class FileRepository : IFileRepository
     {
+        private readonly SqlDbContext _dbContext;
+        public FileRepository(SqlDbContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
         public async Task<string> ProcessFile(byte[] fileBytes, string userId, string fileType, string fileExtension, string tempFolder)
         {
             try
@@ -36,6 +44,28 @@ namespace BetThanYes.Infrastructure.Services.Files
             {
                 // Log the exception (ex) here if needed
                 return "";
+            }
+        }
+
+        public async Task<bool> SaveFile(UploadFileDto uploadFileDto)
+        {
+            try
+            {
+                const string sql = @"
+                UPDATE [User]
+                SET 
+                    ProfilePictureUrl = @ProfilePictureUrl                    
+                WHERE Id = @IdUser;
+            ";
+
+                using var connection = _dbContext.CreateConnection();
+                await connection.ExecuteAsync(sql, uploadFileDto);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                // Log the exception (ex) here if needed
+                throw;
             }
         }
     }

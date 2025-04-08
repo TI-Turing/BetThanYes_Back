@@ -1,5 +1,5 @@
-﻿using BetThanYes.Application.DTOs.Request.Routine;
-using BetThanYes.Application.DTOs.Response.Routine;
+﻿using BetThanYes.Domain.DTOs.Request.Routine;
+using BetThanYes.Domain.DTOs.Response.Routine;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;

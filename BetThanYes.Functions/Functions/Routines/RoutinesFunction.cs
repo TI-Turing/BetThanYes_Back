@@ -2,9 +2,9 @@
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using BetThanYes.Application.Services.Interfaces;
-using BetThanYes.Application.DTOs.Request.Routine;
+using BetThanYes.Domain.DTOs.Request.Routine;
 using BetThanYes.Domain.Models;
-using BetThanYes.Application.DTOs.Response.Routine;
+using BetThanYes.Domain.DTOs.Response.Routine;
 
 namespace BetThanYes.Functions.Functions.Routines
 {

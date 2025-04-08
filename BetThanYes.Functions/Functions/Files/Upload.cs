@@ -8,8 +8,8 @@ using BetThanYes.Application.Services.Interfaces;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using BetThanYes.Domain.Models;
-using BetThanYes.Application.DTOs.Request.File;
-using BetThanYes.Application.DTOs.File;
+using BetThanYes.Domain.DTOs.Request.File;
+using BetThanYes.Domain.DTOs.File;
 
 
 namespace BetThanYes.Functions.Functions.Files
@@ -43,7 +43,8 @@ namespace BetThanYes.Functions.Functions.Files
 
                 objResponse.Data = new UploadFileResponse();
                 objResponse.Data.Uri = await _fileService.ProcessFile(data);
-                objResponse.Data.Result = string.IsNullOrEmpty(objResponse.Data.Uri) ? false : true;
+                data.ProfilePictureUrl = objResponse.Data.Uri;
+                objResponse.Data.Result = await _fileService.SaveFile(data);
                 objResponse.Success = true;
                 objResponse.Message = "Archivo subido correctamente.";
                 objResponse.StatusCode = StatusCodes.Status200OK;

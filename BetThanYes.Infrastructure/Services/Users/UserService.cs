@@ -51,7 +51,7 @@ namespace BetThanYes.Infrastructure.Services.Users
 
         public async Task<User?> GetByIdAsync(Guid id)
         {
-            const string sql = "SELECT * FROM Users WHERE Id = @Id;";
+            const string sql = "SELECT * FROM [User] WHERE Id = @Id;";
             using var connection = _dbContext.CreateConnection();
             return await connection.QueryFirstOrDefaultAsync<User>(sql, new { Id = id });
         }
@@ -59,7 +59,7 @@ namespace BetThanYes.Infrastructure.Services.Users
         public async Task UpdateAsync(User user)
         {
             const string sql = @"
-                UPDATE Users
+                UPDATE [User]
                 SET 
                     FullName = @FullName,
                     Email = @Email,
