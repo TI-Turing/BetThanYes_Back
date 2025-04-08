@@ -42,6 +42,9 @@ var host = new HostBuilder()
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IAuthRepository, AuthRepository>();
 
+        services.AddScoped<ILoginService, LoginService>();
+        services.AddScoped<IPasswordService, PasswordService>();
+
         // Aquí puedes seguir agregando más servicios si los necesitas
         // services.AddScoped<IUserService, UserService>();
     })

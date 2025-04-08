@@ -12,10 +12,16 @@ namespace BetThanYes.Functions.Functions.Users
     public class UsersFunction
     {
         private readonly IUserService _userService;
+        private readonly ILogger<UsersFunction> _logger;
+        private readonly IAuthService _authService;
+        private readonly IPasswordService _passwordService;
 
-        public UsersFunction(IUserService userService)
+        public UsersFunction(IUserService userService, ILogger<UsersFunction> logger, IAuthService authService, IPasswordService passwordService)
         {
             _userService = userService;
+            _logger = logger;
+            _authService = authService;
+            _passwordService = passwordService;
         }
 
         [Function("CreateUser")]
@@ -35,7 +41,7 @@ namespace BetThanYes.Functions.Functions.Users
                     response.StatusCode = StatusCodes.Status400BadRequest;
                     return response;
                 }
-
+                requestBody.Password = _passwordService.HashPassword(requestBody.Password);
                 var result = await _userService.CreateAsync(requestBody);
 
                 response.Data = new CreateUserResponse();

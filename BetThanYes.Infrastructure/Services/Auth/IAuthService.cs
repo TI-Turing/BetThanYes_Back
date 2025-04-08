@@ -1,4 +1,5 @@
-﻿using BetThanYes.Domain.Models;
+﻿using BetThanYes.Domain.DTOs.Request.Auth;
+using BetThanYes.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,7 @@ namespace BetThanYes.Infrastructure.Services.Auth
     public interface IAuthRepository
     {
         Task<User> GetByEmail(string email);
+        Task<bool> SaveRefreshTokenAsync(RefreshTokenDto dto);
         //Task<bool> ValidatePhone(string phone);
         //Task<bool> ValidateUserName(string userName);
         //Task<bool> ValidatePassword(string password);

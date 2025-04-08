@@ -1,6 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
+    <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\BetThanYes.Domain\BetThanYes.Domain.csproj" />
     <ProjectReference Include="..\BetThanYes.Infrastructure\BetThanYes.Infrastructure.csproj" />
   </ItemGroup>
