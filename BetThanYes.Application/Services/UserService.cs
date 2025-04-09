@@ -7,16 +7,19 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BetThanYes.Infrastructure.Services.Auth;
 
 namespace BetThanYes.Application.Services
 {
     public class UserService : IUserService
     {
         private readonly IUserRepository _repository;
+        private readonly IAuthRepository _authRepository;
 
-        public UserService(IUserRepository repository)
+        public UserService(IUserRepository repository, IAuthRepository authRepository)
         {
             _repository = repository;
+            _authRepository = authRepository;
         }
 
         public async Task<CreateUserResponse> CreateAsync(CreateUserDto dto)
@@ -119,6 +122,13 @@ namespace BetThanYes.Application.Services
             {
                 throw;
             }
+        }
+
+        public async Task<User> GetUserByEmail(string email)
+        {
+            var user = await _authRepository.GetByEmail(email);
+
+            return user;
         }
     }
 }
