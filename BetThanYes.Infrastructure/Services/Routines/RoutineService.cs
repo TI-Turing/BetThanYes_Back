@@ -49,17 +49,27 @@ namespace BetThanYes.Infrastructure.Services.Routines
             return await connection.QueryFirstOrDefaultAsync<Routine>(sql, new { Id = id });
         }
 
-        public async Task UpdateAsync(Routine routine)
+        public async Task<bool> UpdateAsync(Routine routine)
         {
-            const string sql = @"
+            try
+            {
+                const string sql = @"
                 UPDATE Routine 
                 SET RoutineName = @RoutineName,
                     IsDefault = @IsDefault
                 WHERE Id = @Id;
             ";
 
-            using var connection = _dbContext.CreateConnection();
-            await connection.ExecuteAsync(sql, routine);
+                using var connection = _dbContext.CreateConnection();
+                await connection.ExecuteAsync(sql, routine);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                
+                return false;
+            }  
+
         }
     }
 }

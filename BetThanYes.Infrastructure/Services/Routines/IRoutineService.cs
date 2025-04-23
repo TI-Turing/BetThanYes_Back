@@ -10,7 +10,7 @@ namespace BetThanYes.Infrastructure.Services.Routines
         Task<Routine?> GetByIdAsync(Guid id);
         Task<IEnumerable<Routine>> GetAllByUserIdAsync(Guid userId);
         Task AddAsync(Routine routine);
-        Task UpdateAsync(Routine routine);
+        Task<bool> UpdateAsync(Routine routine);
         Task DeleteAsync(Guid id);
     }
 }

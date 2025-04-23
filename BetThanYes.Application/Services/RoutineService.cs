@@ -35,53 +35,64 @@ namespace BetThanYes.Application.Services
 
             return new CreateRoutineResponse
             {
-                Id = routine.Id,
-                RoutineNumber = routine.RoutineNumber
+                Id = routine.Id
             };
         }
 
-        //public async Task DeleteAsync(Guid id) => await _repository.DeleteAsync(id);
+        public async Task DeleteAsync(Guid id) => await _repository.DeleteAsync(id);
 
-        //public async Task<IEnumerable<RoutineResponse>> GetAllByUserIdAsync(Guid userId)
-        //{
-        //    var routines = await _repository.GetAllByUserIdAsync(userId);
+        public async Task<IEnumerable<Routine>> GetAllByUserIdAsync(Guid userId)
+        {
+            var routines = await _repository.GetAllByUserIdAsync(userId);
 
-        //    return routines.Select(r => new RoutineResponse
-        //    {
-        //        Id = r.Id,
-        //        RoutineNumber = r.RoutineNumber,
-        //        UserId = r.UserId,
-        //        Name = r.RoutineName,
-        //        Description = r.Description,
-        //        CreatedAt = r.CreatedAt
-        //    });
-        //}
+            return routines.Select(r => new Routine
+            {
+                Id = r.Id,
+                RoutineNumber = r.RoutineNumber,
+                UserId = r.UserId,
+                RoutineName = r.RoutineName,
+                IsDefault = r.IsDefault,
+                CreatedAt = r.CreatedAt
+            });
+        }
 
-        //public async Task<RoutineResponse?> GetByIdAsync(Guid id)
-        //{
-        //    var routine = await _repository.GetByIdAsync(id);
-        //    if (routine == null) return null;
+        public async Task<RoutineResponse?> GetByIdAsync(Guid id)
+        {
+            var routine = await _repository.GetByIdAsync(id);
+            if (routine == null) return null;
 
-        //    return new RoutineResponse
-        //    {
-        //        Id = routine.Id,
-        //        RoutineNumber = routine.RoutineNumber,
-        //        UserId = routine.UserId,
-        //        Name = routine.RoutineName,
-        //        Description = routine.Description,
-        //        CreatedAt = routine.CreatedAt
-        //    };
-        //}
+            return new RoutineResponse
+            {
+                Id = routine.Id,
+                RoutineNumber = routine.RoutineNumber,
+                UserId = routine.UserId,
+                Name = routine.RoutineName,
+               
+                CreatedAt = routine.CreatedAt
+            };
+        }
 
-        //public async Task UpdateAsync(UpdateRoutineDto dto)
-        //{
-        //    var routine = await _repository.GetByIdAsync(dto.Id);
-        //    if (routine == null) return;
+        public async Task<UpdateRoutineResponse> UpdateAsync(UpdateRoutineDto dto)
+        {
+            var routine = await _repository.GetByIdAsync(dto.Id);
 
-        //    routine.RoutineName = dto.Name;
-        //    routine.Description = dto.Description;
+            if (routine == null)
+                return new UpdateRoutineResponse { Success = false };
 
-        //    await _repository.UpdateAsync(routine);
-        //}
+            Routine updateRoutine = new Routine
+            {
+                Id = routine.Id,
+                RoutineNumber = routine.RoutineNumber,
+                UserId = routine.UserId,
+                RoutineName = dto.Name ?? routine.RoutineName, // Si dto.Name es null, se mantiene routine.RoutineName
+                IsDefault = dto.IsDefault ?? routine.IsDefault, // Si dto.IsDefault es null, se mantiene routine.IsDefault
+                CreatedAt = routine.CreatedAt
+            };
+
+            var response = await _repository.UpdateAsync(updateRoutine);
+
+
+            return new UpdateRoutineResponse { Success = response };
+        }
     }
 }

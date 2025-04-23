@@ -1,27 +1,40 @@
-﻿using SendGrid.Helpers.Mail;
-using SendGrid;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System;
 using System.Threading.Tasks;
+using RestSharp;
+using RestSharp.Authenticators;
 
 namespace BetThanYes.Infrastructure.Services.Mail
 {
     public class MailRepository : IMailRepository
     {
-        private readonly string _apiKey = Environment.GetEnvironmentVariable("SENDGRID_API_KEY");
+        private readonly RestClient _client;
+        private readonly string _domain;
+
+        public MailRepository()
+        {
+            // Obtén tu API key y dominio desde variables de entorno
+            var apiKey = Environment.GetEnvironmentVariable("MAILGUN_API_KEY");
+            _domain = Environment.GetEnvironmentVariable("MAILGUN_DOMAIN"); // "betthayes.com"
+
+            var options = new RestClientOptions("https://api.mailgun.net")
+            {
+                Authenticator = new HttpBasicAuthenticator("api", apiKey)
+            };
+            _client = new RestClient(options);
+        }
 
         public async Task<bool> SendEmailAsync(string toEmail, string subject, string htmlContent)
         {
-            var client = new SendGridClient("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");
-            var from = new EmailAddress("jlap.11@hotmail.com"); // Puedes usar uno temporal
-            var to = new EmailAddress("jlapnnn@gmail.com");
-            var msg = MailHelper.CreateSingleEmail(from, to, subject, "", htmlContent);
+            var request = new RestRequest($"/v3/{_domain}/messages", Method.Post);
+            request.AlwaysMultipartFormData = true;
 
-            var response = await client.SendEmailAsync(msg);
-            var message = response.Body.ReadAsStringAsync();
-            return response.IsSuccessStatusCode;
+            request.AddParameter("from", $"Info <info@{_domain}>");
+            request.AddParameter("to", toEmail);
+            request.AddParameter("subject", subject);
+            request.AddParameter("text", htmlContent);
+
+            var response = await _client.ExecuteAsync(request);
+            return response.IsSuccessful;
         }
     }
 }

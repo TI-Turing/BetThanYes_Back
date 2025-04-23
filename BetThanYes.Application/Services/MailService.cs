@@ -1,12 +1,11 @@
-﻿using SendGrid.Helpers.Mail;
-using SendGrid;
+﻿
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BetThanYes.Domain.Models;
-using Newtonsoft.Json.Linq;
+
 using BetThanYes.Infrastructure.Services.Mail;
 using BetThanYes.Application.Services.Interfaces;
 using BetThanYes.Domain.DTOs.Request.Auth;
