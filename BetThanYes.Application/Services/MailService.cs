@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BetThanYes.Domain.Models;
-
+using Microsoft.Extensions.Logging;
 using BetThanYes.Infrastructure.Services.Mail;
 using BetThanYes.Application.Services.Interfaces;
 using BetThanYes.Domain.DTOs.Request.Auth;
@@ -18,15 +18,18 @@ namespace BetThanYes.Application.Services
         private readonly IMailRepository _mailRepository;
         private readonly IAuthService _authService;
         private readonly IUserService _userService;
-        public MailService(IMailRepository mailRepository, IUserService userService, IAuthService authService)
+        private readonly ILogger<MailService> _logger;
+        public MailService(ILogger<MailService> logger, IMailRepository mailRepository, IUserService userService, IAuthService authService)
         {
             _mailRepository = mailRepository;
             _userService = userService;
             _authService = authService;
+            _logger = logger;
         }
 
         public async Task<bool> SendEmailAsync(string toEmail)
         {
+            
             var token = Guid.NewGuid().ToString();
             User user = await _userService.GetUserByEmail(toEmail);
             await _authService.SaveRefreshTokenAsync(new RefreshTokenDto
@@ -41,7 +44,7 @@ namespace BetThanYes.Application.Services
             var resetLink = $"https://betthanyes.com/reset-password?token={token}";
             var emailBody = $"<p>Hola,</p><p>Haz clic en el siguiente enlace para restablecer tu contraseña:</p><a href='{resetLink}'>{resetLink}</a>";
 
-            
+            _logger.LogInformation("Listo para enviar el correo.");
             return await _mailRepository.SendEmailAsync(toEmail, "Recupera tu contraseña", emailBody);
         }
 

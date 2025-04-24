@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
-using BetThanYes.Domain.DTOs.Response.Auth;
 
 namespace BetThanYes.Functions.Functions.Auth
 {
@@ -35,8 +34,11 @@ namespace BetThanYes.Functions.Functions.Auth
                 response.Data = new ResetPasswordResponse();
                 response.Data.Result = await _mailService.SendEmailAsync(email);
 
+                _logger.LogInformation("Resultado del envio de correo: " + response.Data.Result);
+
                 if (response.Data.Result == null || response.Data.Result == false)
                 {
+                    _logger.LogError("El correo no fue enviado: " + response.Data.Result);
                     response.Success = false;
                     response.Message = "Error al enviar el correo.";
                     response.StatusCode = StatusCodes.Status400BadRequest;
@@ -50,6 +52,7 @@ namespace BetThanYes.Functions.Functions.Auth
             }
             catch (Exception ex)
             {
+                _logger.LogError("Ejecucion fallida. " + ex.Message);
                 var response = new ApiResponse<ResetPasswordResponse>();
                 response.Success = false;
                 response.Message = ex.Message;
