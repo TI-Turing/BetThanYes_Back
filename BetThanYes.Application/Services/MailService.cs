@@ -37,7 +37,7 @@ namespace BetThanYes.Application.Services
             var token = Guid.NewGuid().ToString();
             User user = await _userService.GetUserByEmail(toEmail);
 
-            string logoUrl = $"https://sabetthanyespublic.blob.core.windows.net/images/favicon.png";
+            string logoUrl = $"https://sabetthanyespublic.blob.core.windows.net/images/BTY.png";
 
             await _authService.SaveRefreshTokenAsync(new RefreshTokenDto
             {

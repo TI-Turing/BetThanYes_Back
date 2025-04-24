@@ -1,5 +1,4 @@
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+using System;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 
@@ -7,18 +6,22 @@ namespace BetThanYes.Functions.Functions.Tools
 {
     public class Function
     {
-        private readonly ILogger<Function> _logger;
+        private readonly ILogger _logger;
 
-        public Function(ILogger<Function> logger)
+        public Function(ILoggerFactory loggerFactory)
         {
-            _logger = logger;
+            _logger = loggerFactory.CreateLogger<Function>();
         }
 
         [Function("Function")]
-        public IActionResult Run([HttpTrigger(AuthorizationLevel.Anonymous, "get")] HttpRequest req)
+        public void Run([TimerTrigger("0 */5 * * * *")] TimerInfo myTimer)
         {
-            _logger.LogInformation("C# HTTP trigger function processed a request.");
-            return new OkObjectResult("Welcome to Azure Functions!");
+            _logger.LogInformation($"C# Timer trigger function executed at: {DateTime.Now}");
+            
+            if (myTimer.ScheduleStatus is not null)
+            {
+                _logger.LogInformation($"Next timer schedule at: {myTimer.ScheduleStatus.Next}");
+            }
         }
     }
 }
