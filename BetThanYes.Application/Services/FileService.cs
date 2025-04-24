@@ -11,6 +11,7 @@ using BetThanYes.Application.Services.Interfaces;
 using BetThanYes.Infrastructure.Services.Routines;
 using BetThanYes.Infrastructure.Services.Files;
 using BetThanYes.Domain.DTOs.Request.File;
+using Azure.Storage.Blobs.Models;
 //using BetThanYes.;
 
 namespace BetThanYes.Application.Services
@@ -92,5 +93,34 @@ namespace BetThanYes.Application.Services
                 return false;
             }
         }
+
+        public async Task<BlobDownloadInfo> GetBlobFile(string containerName, string blobName, string storageAccountUrl)
+        {
+            try
+            {
+                return await _repository.GetBlobFile(containerName, blobName, storageAccountUrl);
+            }
+            catch (Exception ex)
+            {
+                // Log the exception (ex) here if needed
+                throw new InvalidOperationException("Error al obtener el blob.", ex);
+            }
+        }
+
+        public async Task<byte[]> ConvertBlobToBytes(BlobDownloadInfo blobFile)
+        {
+            try
+            {
+                using var memoryStream = new MemoryStream();
+                await blobFile.Content.CopyToAsync(memoryStream);
+                return memoryStream.ToArray();
+            }
+            catch (Exception ex)
+            {
+                // Log the exception (ex) here if needed
+                throw new InvalidOperationException("Error al convertir el blob en bytes.", ex);
+            }
+        }
+
     }
 }

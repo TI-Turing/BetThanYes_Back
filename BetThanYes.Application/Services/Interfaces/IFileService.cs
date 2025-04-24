@@ -1,4 +1,5 @@
-﻿using BetThanYes.Domain.DTOs.Request.File;
+﻿using Azure.Storage.Blobs.Models;
+using BetThanYes.Domain.DTOs.Request.File;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,5 +12,7 @@ namespace BetThanYes.Application.Services.Interfaces
     {
         Task<string> ProcessFile(UploadFileDto file);
         Task<bool> SaveFile(UploadFileDto uploadFileDto);
+        Task<byte[]> ConvertBlobToBytes(BlobDownloadInfo blobFile);
+        Task<BlobDownloadInfo> GetBlobFile(string containerName, string blobName, string storageAccountUrl);
     }
 }

@@ -41,7 +41,8 @@ namespace BetThanYes.Infrastructure.Services.Mail
             request.AddParameter("from", $"Info <info@{_domain}>");
             request.AddParameter("to", toEmail);
             request.AddParameter("subject", subject);
-            request.AddParameter("text", htmlContent);
+            request.AddParameter("html", htmlContent);
+
 
             var response = await _client.ExecuteAsync(request);
 

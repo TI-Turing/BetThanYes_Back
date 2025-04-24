@@ -1,4 +1,6 @@
-﻿using BetThanYes.Domain.DTOs.Request.File;
+﻿using Azure.Storage.Blobs.Models;
+using Azure.Storage.Blobs;
+using BetThanYes.Domain.DTOs.Request.File;
 using BetThanYes.Domain.Enums;
 using BetThanYes.Domain.Models;
 using BetThanYes.Infrastructure.Database;
@@ -8,7 +10,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Azure.Identity;
+using System.Data;
 
 namespace BetThanYes.Infrastructure.Services.Files
 {
@@ -66,6 +69,34 @@ namespace BetThanYes.Infrastructure.Services.Files
             {
                 // Log the exception (ex) here if needed
                 throw;
+            }
+        }
+
+        public async Task<BlobDownloadInfo> GetBlobFile(string containerName, string blobName, string storageAccountUrl)
+        {
+            // DefaultAzureCredential intentará usar Managed Identity cuando esté disponible
+            var credential = new DefaultAzureCredential();
+
+            // Construye el cliente apuntando a tu storage account
+            var blobServiceClient = new BlobServiceClient(new Uri(storageAccountUrl), credential);
+
+            // Obtén el contenedor
+            BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient(containerName);
+
+            // Obtén el blob
+            BlobClient blobClient = containerClient.GetBlobClient(blobName);
+
+            // Comprueba existencia
+            if (await blobClient.ExistsAsync())
+            {
+                Console.WriteLine($"Descargando {blobName}...");
+                BlobDownloadInfo download = await blobClient.DownloadAsync();
+                return download;
+            }
+            else
+            {
+                Console.WriteLine($"El blob {blobName} no existe.");
+                throw new FileNotFoundException($"El blob '{blobName}' no existe en el contenedor '{containerName}'.");
             }
         }
     }
