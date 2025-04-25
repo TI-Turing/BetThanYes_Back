@@ -42,10 +42,13 @@ namespace BetThanYes.Functions.Functions.Login
                     response.StatusCode = StatusCodes.Status400BadRequest;
                     return response;
                 }
-                User user = await _loginService.GetUserByEmail(requestBody.Email);
+                User user = await _loginService.GetUserByEmail(requestBody.Email);                
                 string passwordHash = user.PasswordHash;
 
+                _logger.LogInformation("User obtained.");
+
                 bool isValid = _passwordService.VerifyPassword(requestBody.Password, passwordHash);
+                _logger.LogInformation("Password: " + isValid.ToString());
                 if (isValid)
                 {
                     var result = await _authService.GetNewToken(user.Id, requestBody.Email, 1);
@@ -59,7 +62,7 @@ namespace BetThanYes.Functions.Functions.Login
 
                     req.Headers.TryGetValues("X-Forwarded-For", out var ipAddressValue);
                     var ipAddress = ipAddressValue?.FirstOrDefault() ?? "Unknown Ip";
-
+                    _logger.LogInformation("Headers: " + refreshToken + ", " + deviceId + ", " + ipAddress);
 
                     await _authService.SaveRefreshTokenAsync(new RefreshTokenDto
                     {
