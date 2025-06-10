@@ -18,6 +18,10 @@ namespace BetThanYes.Infrastructure.Database
         {
             
             return new SqlConnection(_configuration);
+
+         
+
+
         }
     }
 }
