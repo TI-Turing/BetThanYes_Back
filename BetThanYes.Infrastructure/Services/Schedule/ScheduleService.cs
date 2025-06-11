@@ -31,4 +31,4 @@ namespace BetThanYes.Infrastructure.Services.Users
             await connection.ExecuteAsync(sql, objSchedule);
         }        
     }
-}
+} 
