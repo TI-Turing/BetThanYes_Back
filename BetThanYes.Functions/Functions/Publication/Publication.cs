@@ -3,98 +3,59 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 using Microsoft.Azure.Functions.Worker.Http;
 using BetThanYes.Application.Services.Interfaces;
-using BetThanYes.Domain.DTOs.Request.User;
+using BetThanYes.Domain.DTOs.Request.Publication;
 using BetThanYes.Domain.Models;
-using BetThanYes.Domain.DTOs.Response.User;
+using BetThanYes.Domain.DTOs.Response.Publication;
 
-namespace BetThanYes.Functions.Functions.Users
+namespace BetThanYes.Functions.Functions.Publication
 {
-    public class UsersFunction
+    public class PublicationFunction
     {
-        private readonly IUserService _userService;
-        private readonly ILogger<UsersFunction> _logger;
-        private readonly IAuthService _authService;
-        private readonly IPasswordService _passwordService;
+        private readonly IPublicationService _publicationService;
+        private readonly ILogger<PublicationFunction> _logger; //Control de logs
 
-        public UsersFunction(IUserService userService, ILogger<UsersFunction> logger, IAuthService authService, IPasswordService passwordService)
+        public PublicationFunction(IPublicationService publicationService, ILogger<PublicationFunction> logger)
         {
-            _userService = userService;
+            _publicationService = publicationService;
             _logger = logger;
-            _authService = authService;
-            _passwordService = passwordService;
+
         }
 
-        [Function("CreateUser")]
-        public async Task<ApiResponse<CreateUserResponse>> CreateUser(
+        [Function("CreatePublication")]
+
+        public async Task<ApiResponse<PublicationResponse>> CreatePublication(
             [HttpTrigger(AuthorizationLevel.Function, "post")] HttpRequestData req)
         {
-            var response = new ApiResponse<CreateUserResponse>();
+            var objResponse = new ApiResponse<PublicationResponse>();
 
             try
             {
-                var requestBody = await req.ReadFromJsonAsync<CreateUserDto>();
+                var requestBody = await req.ReadFromJsonAsync<PublicationDto>();
 
-                if (requestBody == null)
-                {
-                    response.Success = false;
-                    response.Message = "Solicitud inv�lida.";
-                    response.StatusCode = StatusCodes.Status400BadRequest;
-                    return response;
-                }
-                requestBody.Password = _passwordService.HashPassword(requestBody.Password);
-                var result = await _userService.CreateAsync(requestBody);
+                // if (requestBody == null)
+                // {
+                //     objResponse.Success = false;
+                //     objResponse.Message = "Solicitud inv�lida.";
+                //     objResponse.StatusCode = StatusCodes.Status400BadRequest;
+                //     return objResponse;
+                // }
 
-                response.Data = new CreateUserResponse();
-                response.Data.Id = result.Id;
-                response.Success = true;
-                response.Message = "Usuario creado exitosamente.";
-                response.StatusCode = StatusCodes.Status200OK;
+                var objResult = await _publicationService.CreateAsync(requestBody);//Inserta en Base de Datos
 
-                return response;
+                objResponse.Data = new PublicationResponse();
+                objResponse.Data.Id = objResult.Id;
+                objResponse.Success = true;
+                objResponse.Message = "Publicación creada exitosamente.";
+                objResponse.StatusCode = StatusCodes.Status200OK;
+
+                return objResponse;
             }
             catch (Exception ex)
             {
-                response.Success = false;
-                response.Message = ex.Message;
-                response.StatusCode = StatusCodes.Status500InternalServerError;
-                return response;
-            }
-        }
-
-        [Function("UpdateUser")]
-        public async Task<ApiResponse<UpdateUserResponse>> UpdateUser(
-            [HttpTrigger(AuthorizationLevel.Function, "post")] HttpRequestData req)
-        {
-            var response = new ApiResponse<UpdateUserResponse>();
-
-            try
-            {
-                var requestBody = await req.ReadFromJsonAsync<UpdateUserDto>();
-
-                if (requestBody == null)
-                {
-                    response.Success = false;
-                    response.Message = "Solicitud inv�lida.";
-                    response.StatusCode = StatusCodes.Status400BadRequest;
-                    return response;
-                }
-
-                var result = await _userService.UpdateAsync(requestBody);
-
-                response.Data = new UpdateUserResponse();
-                response.Data.Result = result.Result;
-                response.Success = true;
-                response.Message = "Usuario actualizado exitosamente.";
-                response.StatusCode = StatusCodes.Status200OK;
-
-                return response;
-            }
-            catch (Exception ex)
-            {
-                response.Success = false;
-                response.Message = ex.Message;
-                response.StatusCode = StatusCodes.Status500InternalServerError;
-                return response;
+                objResponse.Success = false;
+                objResponse.Message = ex.Message;
+                objResponse.StatusCode = StatusCodes.Status500InternalServerError;
+                return objResponse;
             }
         }
     }
