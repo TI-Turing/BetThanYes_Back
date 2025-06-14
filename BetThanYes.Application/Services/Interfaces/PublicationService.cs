@@ -1,12 +1,8 @@
 using BetThanYes.Application.Services.Interfaces;
 using BetThanYes.Domain.Models;
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using BetThanYes.Domain.DTOs.Request.Publication;
+using BetThanYes.Infrastructure.Services.Publication;
+
 namespace BetThanYes.Application.Services
 {
     public class PublicationService : IPublicationService
@@ -17,7 +13,7 @@ namespace BetThanYes.Application.Services
             _publicationRepository = publicationRepository;
         }
 
-        public async Task<Publication> CreateAsync(CreatePublicationDto request)
+        public async Task<Guid> CreateAsync(CreatePublicationDto request)
         {
             var objResult = await _publicationRepository.CreateAsync(request);
 

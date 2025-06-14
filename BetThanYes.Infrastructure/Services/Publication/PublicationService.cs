@@ -16,19 +16,32 @@ namespace BetThanYes.Infrastructure.Services.Publication
             _dbContext = dbContext;
         }
 
-        public async Task CreateAsync(CreatePublicationDto objPublication)
+        public async Task<Guid> CreateAsync(CreatePublicationDto objPublication)
         {
             const string sql = @"
-                INSERT INTO [User] (
-                    Id, NamePublication, DaysPublication
+                INSERT INTO [Publication] (
+                     Id, Ttitle, Body, CreatedDate, UserId, CategoryId
                 )
                 VALUES (
-                    @Id, @Name, @Days 
+                     @Id, @Ttitle, @Body, @CreatedDate, @UserId, @CategoryId
                 );
             ";
 
             using var connection = _dbContext.CreateConnection();
-            await connection.ExecuteAsync(sql, objPublication);
+            var newId = Guid.NewGuid();
+
+            var parameters = new
+            {
+                Id = newId,
+                Ttitle = objPublication.Title,
+                Body = objPublication.Body,
+                CreatedDate = objPublication.CreatedDate,
+                UserId = objPublication.UserId,
+                CategoryId = objPublication.CategoryId
+            };
+
+            await connection.ExecuteAsync(sql, parameters);
+            return newId;
         }
 
         

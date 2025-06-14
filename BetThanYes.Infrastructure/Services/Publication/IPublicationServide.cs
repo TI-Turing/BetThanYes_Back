@@ -7,7 +7,7 @@ namespace BetThanYes.Infrastructure.Services.Publication
 {
     public interface IPublicationRepository
     {
-        Task CreateAsync(CreatePublicationDto objPublication);
+        Task<Guid> CreateAsync(CreatePublicationDto objPublication);
         
     }
 } 

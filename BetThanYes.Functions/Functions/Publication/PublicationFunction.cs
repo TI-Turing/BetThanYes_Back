@@ -6,6 +6,7 @@ using BetThanYes.Application.Services.Interfaces;
 using BetThanYes.Domain.DTOs.Request.Publication;
 using BetThanYes.Domain.Models;
 using BetThanYes.Domain.DTOs.Response.Publication;
+using Newtonsoft.Json;
 
 namespace BetThanYes.Functions.Functions.Publication
 {
@@ -22,15 +23,15 @@ namespace BetThanYes.Functions.Functions.Publication
         }
 
         [Function("CreatePublication")]
-
         public async Task<ApiResponse<PublicationResponse>> CreatePublication(
             [HttpTrigger(AuthorizationLevel.Function, "post")] HttpRequestData req)
         {
             var objResponse = new ApiResponse<PublicationResponse>();
 
-            try
+            try //Intenta
             {
-                var requestBody = await req.ReadFromJsonAsync<PublicationDto>();
+                string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+                var objRequest = JsonConvert.DeserializeObject<CreatePublicationDto>(requestBody);
 
                 // if (requestBody == null)
                 // {
@@ -40,17 +41,17 @@ namespace BetThanYes.Functions.Functions.Publication
                 //     return objResponse;
                 // }
 
-                var objResult = await _publicationService.CreateAsync(requestBody);//Inserta en Base de Datos
+                var objResult = await _publicationService.CreateAsync(objRequest);//Inserta en Base de Datos
 
                 objResponse.Data = new PublicationResponse();
-                objResponse.Data.Id = objResult.Id;
+                objResponse.Data.Id = objResult;
                 objResponse.Success = true;
                 objResponse.Message = "Publicación creada exitosamente.";
                 objResponse.StatusCode = StatusCodes.Status200OK;
 
                 return objResponse;
             }
-            catch (Exception ex)
+            catch (Exception ex) //Capturar
             {
                 objResponse.Success = false;
                 objResponse.Message = ex.Message;

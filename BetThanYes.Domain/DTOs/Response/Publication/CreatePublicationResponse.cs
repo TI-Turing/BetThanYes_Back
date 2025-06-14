@@ -8,6 +8,6 @@ namespace BetThanYes.Domain.DTOs.Response.Publication
 {
     public class PublicationResponse
     {
-        
+        public Guid Id { get; set; }
     }
 }
