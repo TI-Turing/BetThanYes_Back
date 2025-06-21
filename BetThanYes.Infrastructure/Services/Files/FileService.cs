@@ -61,8 +61,8 @@ namespace BetThanYes.Infrastructure.Services.Files
                 WHERE Id = @IdUser;
             ";
 
-                using var connection = _dbContext.CreateConnection();
-                await connection.ExecuteAsync(sql, uploadFileDto);
+                using var connection = await _dbContext.CreateConnectionAsync();
+                 connection.ExecuteAsync(sql, uploadFileDto);
                 return true;
             }
             catch (Exception ex)

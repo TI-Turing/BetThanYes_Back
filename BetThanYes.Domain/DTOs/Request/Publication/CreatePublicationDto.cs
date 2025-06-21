@@ -12,7 +12,7 @@ namespace BetThanYes.Domain.DTOs.Request.Publication
         public string Body { get; set; }
         public DateTime CreatedDate { get; set; }
         public string UserId { get; set; } 
-        public string CategoryId { get; set; }
+        public int CategoryId { get; set; }
     }
 }
     

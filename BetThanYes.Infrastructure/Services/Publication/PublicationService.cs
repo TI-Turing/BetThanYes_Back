@@ -20,14 +20,14 @@ namespace BetThanYes.Infrastructure.Services.Publication
         {
             const string sql = @"
                 INSERT INTO [Publication] (
-                     Id, Ttitle, Body, CreatedDate, UserId, CategoryId
+                     Id, Title, Body, CreatedDate, UserId, CategoryId
                 )
                 VALUES (
                      @Id, @Ttitle, @Body, @CreatedDate, @UserId, @CategoryId
                 );
             ";
 
-            using var connection = _dbContext.CreateConnection();
+            using var connection = await _dbContext.CreateConnectionAsync();
             var newId = Guid.NewGuid();
 
             var parameters = new
