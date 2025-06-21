@@ -13,7 +13,7 @@ namespace BetThanYes.Application.Services.Interfaces
         //Task<IEnumerable<UserDto>> GetAllByUserIdAsync(Guid userId);
         Task<CreateUserResponse> CreateAsync(CreateUserDto dto);
         Task<UpdateUserResponse> UpdateAsync(UpdateUserDto dto);
-        Task DeleteAsync(Guid id);
+        System.Threading.Tasks.Task DeleteAsync(Guid id);
         Task<User> GetUserByEmail(string email);
     }
 }

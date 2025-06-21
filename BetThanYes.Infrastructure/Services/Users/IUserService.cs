@@ -9,8 +9,8 @@ namespace BetThanYes.Infrastructure.Services.Users
     {
         Task<User?> GetByIdAsync(Guid id);
         Task<IEnumerable<User>> GetAllByUserIdAsync(Guid userId);
-        Task AddAsync(User User);
-        Task UpdateAsync(User User);
-        Task DeleteAsync(Guid id);
+        System.Threading.Tasks.Task AddAsync(User User);
+        System.Threading.Tasks.Task UpdateAsync(User User);
+        System.Threading.Tasks.Task DeleteAsync(Guid id);
     }
 }

@@ -71,10 +71,10 @@ namespace BetThanYes.Application.Services
         public Task<string> GenerateRefreshTokenAsync()
         {
             var refreshToken = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64));
-            return Task.FromResult(refreshToken);
+            return System.Threading.Tasks.Task.FromResult(refreshToken);
         }
 
-        public async Task SaveRefreshTokenAsync(RefreshTokenDto dto)
+        public async System.Threading.Tasks.Task SaveRefreshTokenAsync(RefreshTokenDto dto)
         {
             await _AuthRepository.SaveRefreshTokenAsync(dto);
         }

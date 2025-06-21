@@ -55,7 +55,7 @@ namespace BetThanYes.Application.Services
             }
         }
 
-        public async Task DeleteAsync(Guid id) => await _repository.DeleteAsync(id);
+        public async System.Threading.Tasks.Task DeleteAsync(Guid id) => await _repository.DeleteAsync(id);
 
         //public async Task<IEnumerable<UserDto>> GetAllAsync()
         //{
