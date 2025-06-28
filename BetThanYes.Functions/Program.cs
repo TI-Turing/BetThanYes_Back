@@ -12,6 +12,7 @@ using BetThanYes.Infrastructure.Services.Routines;
 using BetThanYes.Infrastructure.Services.Auth;
 using BetThanYes.Infrastructure.Services.Mail;
 using BetThanYes.Infrastructure.Services.Country;
+using BetThanYes.Infrastructure.Services.Task;
 
 
 var host = new HostBuilder()
@@ -53,7 +54,9 @@ var host = new HostBuilder()
         services.AddScoped<ILoginService, LoginService>();
         services.AddScoped<IPasswordService, PasswordService>();
 
-        
+        services.AddScoped<ITaskService, TaskService>();
+        services.AddScoped<ITaskRepository, TaskRepository>();
+
 
         // Aquí puedes seguir agregando más servicios si los necesitas
         // services.AddScoped<IUserService, UserService>();

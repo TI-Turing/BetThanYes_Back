@@ -16,7 +16,7 @@ namespace BetThanYes.Infrastructure.Services.Users
             _dbContext = dbContext;
         }
 
-        public async Task AddAsync(User user)
+        public async System.Threading.Tasks.Task AddAsync(User user)
         {
             const string sql = @"
                 INSERT INTO [User] (
@@ -35,7 +35,7 @@ namespace BetThanYes.Infrastructure.Services.Users
             await connection.ExecuteAsync(sql, user);
         }
 
-        public async Task DeleteAsync(Guid id)
+        public async System.Threading.Tasks.Task DeleteAsync(Guid id)
         {
             const string sql = "DELETE FROM Users WHERE Id = @Id;";
             using var connection = _dbContext.CreateConnection();
@@ -56,7 +56,7 @@ namespace BetThanYes.Infrastructure.Services.Users
             return await connection.QueryFirstOrDefaultAsync<User>(sql, new { Id = id });
         }
 
-        public async Task UpdateAsync(User user)
+        public async System.Threading.Tasks.Task UpdateAsync(User user)
         {
             const string sql = @"
                 UPDATE [User]

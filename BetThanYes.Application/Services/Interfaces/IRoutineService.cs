@@ -13,6 +13,6 @@ namespace BetThanYes.Application.Services.Interfaces
         Task<IEnumerable<Routine>> GetAllByUserIdAsync(Guid userId);
         Task<CreateRoutineResponse> CreateAsync(CreateRoutineDto dto);
         Task<UpdateRoutineResponse> UpdateAsync(UpdateRoutineDto dto);
-        Task DeleteAsync(Guid id);
+        System.Threading.Tasks.Task DeleteAsync(Guid id);
     }
 }
