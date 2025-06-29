@@ -24,28 +24,28 @@ namespace BetThanYes.Infrastructure.Services.Routines
                 VALUES (@Id, @UserId, @RoutineName, @IsDefault, @CreatedAt);
             ";
 
-            using var connection = _dbContext.CreateConnection();
+            using var connection = await _dbContext.CreateConnectionAsync();
             await connection.ExecuteAsync(sql, routine);
         }
 
         public async System.Threading.Tasks.Task DeleteAsync(Guid id)
         {
             const string sql = "DELETE FROM Routine WHERE Id = @Id;";
-            using var connection = _dbContext.CreateConnection();
+            using var connection = await _dbContext.CreateConnectionAsync();
             await connection.ExecuteAsync(sql, new { Id = id });
         }
 
         public async Task<IEnumerable<Routine>> GetAllByUserIdAsync(Guid userId)
         {
             const string sql = "SELECT * FROM Routine WHERE UserId = @UserId;";
-            using var connection = _dbContext.CreateConnection();
+            using var connection = await _dbContext.CreateConnectionAsync();
             return await connection.QueryAsync<Routine>(sql, new { UserId = userId });
         }
 
         public async Task<Routine?> GetByIdAsync(Guid id)
         {
             const string sql = "SELECT * FROM Routine WHERE Id = @Id;";
-            using var connection = _dbContext.CreateConnection();
+            using var connection = await _dbContext.CreateConnectionAsync();
             return await connection.QueryFirstOrDefaultAsync<Routine>(sql, new { Id = id });
         }
 
@@ -60,7 +60,7 @@ namespace BetThanYes.Infrastructure.Services.Routines
                 WHERE Id = @Id;
             ";
 
-                using var connection = _dbContext.CreateConnection();
+                using var connection = await _dbContext.CreateConnectionAsync();
                 await connection.ExecuteAsync(sql, routine);
                 return true;
             }

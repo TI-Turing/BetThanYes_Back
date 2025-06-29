@@ -22,7 +22,7 @@ namespace BetThanYes.Infrastructure.Services.Country
         public async Task<List<Domain.Models.Country>> GetCountries()
         {
             const string sql = "SELECT * FROM Country";
-            using var connection = _dbContext.CreateConnection();
+            using var connection = await _dbContext.CreateConnectionAsync();
             var countries = await connection.QueryAsync<Domain.Models.Country>(sql);
             return countries.ToList(); // Convertir el IEnumerable a List
         }

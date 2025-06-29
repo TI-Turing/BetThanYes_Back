@@ -31,28 +31,28 @@ namespace BetThanYes.Infrastructure.Services.Users
                 );
             ";
 
-            using var connection = _dbContext.CreateConnection();
+            using var connection = await _dbContext.CreateConnectionAsync();
             await connection.ExecuteAsync(sql, user);
         }
 
         public async System.Threading.Tasks.Task DeleteAsync(Guid id)
         {
             const string sql = "DELETE FROM Users WHERE Id = @Id;";
-            using var connection = _dbContext.CreateConnection();
+            using var connection = await _dbContext.CreateConnectionAsync();
             await connection.ExecuteAsync(sql, new { Id = id });
         }
 
         public async Task<IEnumerable<User>> GetAllByUserIdAsync(Guid userId)
         {
             const string sql = "SELECT * FROM Users WHERE Id = @UserId;";
-            using var connection = _dbContext.CreateConnection();
+            using var connection = await _dbContext.CreateConnectionAsync();
             return await connection.QueryAsync<User>(sql, new { UserId = userId });
         }
 
         public async Task<User?> GetByIdAsync(Guid id)
         {
             const string sql = "SELECT * FROM [User] WHERE Id = @Id;";
-            using var connection = _dbContext.CreateConnection();
+            using var connection = await _dbContext.CreateConnectionAsync();
             return await connection.QueryFirstOrDefaultAsync<User>(sql, new { Id = id });
         }
 
@@ -75,7 +75,7 @@ namespace BetThanYes.Infrastructure.Services.Users
                 WHERE Id = @Id;
             ";
 
-            using var connection = _dbContext.CreateConnection();
+            using var connection = await _dbContext.CreateConnectionAsync();
             await connection.ExecuteAsync(sql, user);
         }
     }

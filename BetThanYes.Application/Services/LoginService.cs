@@ -20,9 +20,9 @@ namespace BetThanYes.Application.Services
         public async Task<User> GetUserByEmail(string email)
         {
             var user = await _authRepository.GetByEmail(email);
-            
+
             return user;
         }
     }
 }
- 
+

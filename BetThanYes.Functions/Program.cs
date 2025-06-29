@@ -12,7 +12,9 @@ using BetThanYes.Infrastructure.Services.Routines;
 using BetThanYes.Infrastructure.Services.Auth;
 using BetThanYes.Infrastructure.Services.Mail;
 using BetThanYes.Infrastructure.Services.Country;
+using BetThanYes.Infrastructure.Services.Publication;
 using BetThanYes.Infrastructure.Services.Task;
+
 
 
 var host = new HostBuilder()
@@ -28,7 +30,7 @@ var host = new HostBuilder()
         var configuration = context.Configuration;
         var connectionString = configuration.GetConnectionString("DefaultConnection");
 
-        // Inyectar configuración si la necesitas
+        // Inyectar configuraciÃ³n si la necesitas
         services.AddSingleton<IConfiguration>(configuration);
         services.AddSingleton(new SqlDbContext(connectionString));
 
@@ -54,12 +56,13 @@ var host = new HostBuilder()
         services.AddScoped<ILoginService, LoginService>();
         services.AddScoped<IPasswordService, PasswordService>();
 
+
+        services.AddScoped<IPublicationService, PublicationService>();
+        services.AddScoped<IPublicationRepository, PublicationRepository>();
+
         services.AddScoped<ITaskService, TaskService>();
         services.AddScoped<ITaskRepository, TaskRepository>();
 
-
-        // Aquí puedes seguir agregando más servicios si los necesitas
-        // services.AddScoped<IUserService, UserService>();
     })
     .Build();
 

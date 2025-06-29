@@ -20,7 +20,7 @@ namespace BetThanYes.Infrastructure.Services.Auth
         public async Task<User> GetByEmail(string email)
         {
             const string sql = "SELECT * FROM [User] WHERE Email = @Email;";
-            using var connection = _dbContext.CreateConnection();
+            using var connection = await _dbContext.CreateConnectionAsync();
             
             User result = await connection.QueryFirstOrDefaultAsync<User>(sql, new { Email = email });
             return result;
@@ -32,9 +32,9 @@ namespace BetThanYes.Infrastructure.Services.Auth
             {
                 var query = @"INSERT INTO RefreshTokens (UserId, RefreshToken, ExpirationDate, DeviceId, DeviceName, IPAddress)
                   VALUES (@UserId, @RefreshToken, @ExpirationDate, @DeviceId, @DeviceName, @IPAddress)";
-                using var connection = _dbContext.CreateConnection();
+                using var connection = await _dbContext.CreateConnectionAsync();
 
-                await connection.ExecuteAsync(query, dto);
+                 connection.ExecuteAsync(query, dto);
                 return true;
             }
             catch (SqlException ex)
