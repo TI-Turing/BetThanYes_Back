@@ -28,5 +28,14 @@ namespace BetThanYes.Functions.Functions.Task
             Guid id = await _taskService.AddAsync(requestBody);
             return new OkObjectResult("Welcome to Azure Functions!");
         }
+
+        [Function("GetAllFunction")]
+        public async Task<IActionResult> GetAsync([HttpTrigger(AuthorizationLevel.Function, "get")] HttpRequestData req)
+        {
+           
+            _logger.LogInformation("C# HTTP trigger function processed a request.");
+            var tasks = await _taskService.GetAsync();
+            return new OkObjectResult(tasks);
+        }
     }
 }

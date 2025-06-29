@@ -10,6 +10,7 @@ namespace BetThanYes.Infrastructure.Services.Task
     public  interface ITaskRepository
     {
         Task<Guid> AddAsync(CreateTaskDto objTask);
+        Task<List<Domain.Models.Task>> GetAsync();
 
     }
 }
