@@ -22,6 +22,7 @@ namespace BetThanYes.Functions.Functions.Publication
 
         }
 
+
         [Function("CreatePublication")]
         public async Task<ApiResponse<PublicationResponse>> CreatePublication(
             [HttpTrigger(AuthorizationLevel.Function, "post")] HttpRequestData req)
@@ -41,7 +42,7 @@ namespace BetThanYes.Functions.Functions.Publication
                 //     return objResponse;
                 // }
 
-                var objResult = await _publicationService.CreateAsync(objRequest);//Inserta en Base de Datos
+                var objResult = await _publicationService.AddAsync(objRequest);//Inserta en Base de Datos
 
                 objResponse.Data = new PublicationResponse();
                 objResponse.Data.Id = objResult;
@@ -59,5 +60,46 @@ namespace BetThanYes.Functions.Functions.Publication
                 return objResponse;
             }
         }
+
+
+
+        [Function("GetAllPublication")]
+        public async Task<ApiResponse<List<Domain.Models.Publication>>> GetPublication(
+            [HttpTrigger(AuthorizationLevel.Function, "get")] HttpRequestData req)
+        {
+            var objResponse = new ApiResponse<List<Domain.Models.Publication>>();
+
+            try //Intenta
+            {
+            //    string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+               //var objRequest = JsonConvert.DeserializeObject<GetPublicationDto>(requestBody);
+
+                // if (requestBody == null)
+                // {
+                //     objResponse.Success = false;
+                //     objResponse.Message = "Solicitud inv�lida.";
+                //     objResponse.StatusCode = StatusCodes.Status400BadRequest;
+                //     return objResponse;
+                // }
+
+                var objResult = await _publicationService.GetAsync();//Lee en Base de Datos
+
+                objResponse.Data = objResult;
+              //  objResponse.Data.Id = objResult;
+                objResponse.Success = true;
+                objResponse.Message = "OK";
+                objResponse.StatusCode = StatusCodes.Status200OK;
+
+                return objResponse;
+            }
+            catch (Exception ex) //Capturar
+            {
+                objResponse.Success = false;
+                objResponse.Message = ex.Message;
+                objResponse.StatusCode = StatusCodes.Status500InternalServerError;
+                return objResponse;
+            }
+        }
     }
 }
+

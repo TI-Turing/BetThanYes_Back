@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using BetThanYes.Domain.Models;
 using BetThanYes.Domain.DTOs.Request.Task;
 
 namespace BetThanYes.Infrastructure.Services.Task
