@@ -10,5 +10,6 @@ namespace BetThanYes.Application.Services.Interfaces
     public interface ITaskService
     {
         Task<Guid> AddAsync(CreateTaskDto objTask);
+        Task<List<Domain.Models.Task>> GetAsync();
     }
 }

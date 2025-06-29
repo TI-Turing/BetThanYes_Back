@@ -20,5 +20,9 @@ namespace BetThanYes.Application.Services
         {
                 return _taskRepository.AddAsync(objTask);
         }
+        public Task<List<Domain.Models.Task>> GetAsync()
+        {
+            return _taskRepository.GetAsync();
+        }
     }
 }
