@@ -9,6 +9,7 @@ namespace BetThanYes.Application.Services.Interfaces
 {
     public interface IPublicationService
     {
-        Task<Guid> CreateAsync(CreatePublicationDto request);
+        Task<Guid> AddAsync(CreatePublicationDto request);
+        Task<List<Domain.Models.Publication>> GetAsync();
     }
 }

@@ -16,7 +16,7 @@ namespace BetThanYes.Infrastructure.Services.Publication
             _dbContext = dbContext;
         }
 
-        public async Task<Guid> CreateAsync(CreatePublicationDto objPublication)
+        public async Task<Guid> AddAsync(CreatePublicationDto objPublication)
         {
             const string sql = @"
                 INSERT INTO [Publication] (
@@ -44,6 +44,33 @@ namespace BetThanYes.Infrastructure.Services.Publication
             return newId;
         }
 
-        
+
+
+        public async Task<List<Domain.Models.Publication>> GetAsync()
+        {
+            const string sql = @"
+                SELECT * FROM [Publication]
+                    
+            ";
+
+            using var connection = await _dbContext.CreateConnectionAsync();
+
+
+            /*var parameters = new
+            {
+                Id = newId,
+                Ttitle = objPublication.Title,
+                Body = objPublication.Body,
+                CreatedDate = objPublication.CreatedDate,
+                UserId = objPublication.UserId,
+                CategoryId = objPublication.CategoryId
+            };
+*/
+
+            var objResult = await connection.QueryAsync<Domain.Models.Publication>(sql);
+            return objResult.ToList();
+        }
+
+
     }
 }
