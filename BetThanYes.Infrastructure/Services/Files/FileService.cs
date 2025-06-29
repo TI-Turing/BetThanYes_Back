@@ -15,7 +15,7 @@ using System.Data;
 
 namespace BetThanYes.Infrastructure.Services.Files
 {
-    public class FileRepository : IFileRepository
+    public class FileRepository : IFileRepository 
     {
         private readonly SqlDbContext _dbContext;
         public FileRepository(SqlDbContext dbContext)

@@ -25,3 +25,4 @@ namespace BetThanYes.Application.Services
         }
     }
 }
+

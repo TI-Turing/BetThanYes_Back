@@ -17,7 +17,7 @@ namespace BetThanYes.Infrastructure.Services.Routines
             _dbContext = dbContext;
         }
 
-        public async Task AddAsync(Routine routine)
+        public async System.Threading.Tasks.Task AddAsync(Routine routine)
         {
             const string sql = @"
                 INSERT INTO Routine (Id, UserId, RoutineName, IsDefault, CreatedAt)
@@ -28,7 +28,7 @@ namespace BetThanYes.Infrastructure.Services.Routines
             await connection.ExecuteAsync(sql, routine);
         }
 
-        public async Task DeleteAsync(Guid id)
+        public async System.Threading.Tasks.Task DeleteAsync(Guid id)
         {
             const string sql = "DELETE FROM Routine WHERE Id = @Id;";
             using var connection = await _dbContext.CreateConnectionAsync();

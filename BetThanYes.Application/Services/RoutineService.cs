@@ -39,9 +39,9 @@ namespace BetThanYes.Application.Services
             };
         }
 
-        public async Task DeleteAsync(Guid id) => await _repository.DeleteAsync(id);
+        public async System.Threading.Tasks.Task DeleteAsync(Guid id) => await _repository.DeleteAsync(id);
 
-        public async Task<IEnumerable<Routine>> GetAllByUserIdAsync(Guid userId)
+        public async System.Threading.Tasks.Task<IEnumerable<Routine>> GetAllByUserIdAsync(Guid userId)
         {
             var routines = await _repository.GetAllByUserIdAsync(userId);
 
