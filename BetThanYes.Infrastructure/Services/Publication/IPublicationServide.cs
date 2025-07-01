@@ -9,6 +9,6 @@ namespace BetThanYes.Infrastructure.Services.Publication
     {
         Task<Guid> AddAsync(CreatePublicationDto objPublication);
         Task<List<Domain.Models.Publication>> GetAsync();
-        
+        Task<Domain.Models.Publication?> GetByIdAsync(Guid id);
     }
 } 
