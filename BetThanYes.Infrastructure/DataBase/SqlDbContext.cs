@@ -18,8 +18,10 @@ namespace BetThanYes.Infrastructure.Database
 
         public async Task<IDbConnection> CreateConnectionAsync()
         {
-  
-            return new SqlConnection(_configuration);
+            var connection = new SqlConnection(_configuration);
+            await connection.OpenAsync(); // Aquí usas await para abrir la conexión asíncronamente
+            return connection;
+            // return new SqlConnection(_configuration);
 
         }
     }

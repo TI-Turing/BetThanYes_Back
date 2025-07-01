@@ -11,5 +11,7 @@ namespace BetThanYes.Application.Services.Interfaces
     {
         Task<Guid> AddAsync(CreatePublicationDto request);
         Task<List<Domain.Models.Publication>> GetAsync();
+        Task<Domain.Models.Publication?> GetByIdAsync(Guid id);
+        // Debe permitir null  
     }
 }
