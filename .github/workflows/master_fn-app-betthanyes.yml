@@ -6,7 +6,7 @@ name: Build and deploy dotnet core app to Azure Function App - fn-app-betthanyes
 on:
   push:
     branches:
-      - master
+      - development
   workflow_dispatch:
 
 env:
