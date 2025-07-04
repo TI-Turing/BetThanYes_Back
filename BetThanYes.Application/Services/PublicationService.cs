@@ -25,5 +25,13 @@ namespace BetThanYes.Application.Services
         {
             return _publicationRepository.GetAsync();
         }
+        public async Task<Domain.Models.Publication?> GetByIdAsync(Guid id)
+        {
+            return await _publicationRepository.GetByIdAsync(id);
+        }
+        public Task<bool> UpdateAsync(UpdatePublicationDto request)
+        {
+            return _publicationRepository.UpdateAsync(request);
+        }
     }
 }

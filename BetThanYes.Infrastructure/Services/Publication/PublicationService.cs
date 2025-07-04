@@ -23,7 +23,7 @@ namespace BetThanYes.Infrastructure.Services.Publication
                      Id, Title, Body, CreatedDate, UserId, CategoryId
                 )
                 VALUES (
-                     @Id, @Ttitle, @Body, @CreatedDate, @UserId, @CategoryId
+                     @Id, @Title, @Body, @CreatedDate, @UserId, @CategoryId
                 );
             ";
 
@@ -33,7 +33,7 @@ namespace BetThanYes.Infrastructure.Services.Publication
             var parameters = new
             {
                 Id = newId,
-                Ttitle = objPublication.Title,
+                Title = objPublication.Title,
                 Body = objPublication.Body,
                 CreatedDate = objPublication.CreatedDate,
                 UserId = objPublication.UserId,
@@ -72,5 +72,35 @@ namespace BetThanYes.Infrastructure.Services.Publication
         }
 
 
+        public async Task<Domain.Models.Publication?> GetByIdAsync(Guid id)
+        {
+            const string sql = @"SELECT * FROM [Publication] WHERE Id = @Id";
+            using var connection = await _dbContext.CreateConnectionAsync();
+            var result = await connection.QuerySingleOrDefaultAsync<Domain.Models.Publication>(sql, new { Id = id });
+            return result;
+        }
+        // Este método actualiza una publicación existente en la base de datos
+        // y devuelve un valor booleano que indica si la actualización fue exitosa.
+        public async Task<bool> UpdateAsync(UpdatePublicationDto request)
+        {
+            const string sql = @"
+                UPDATE [Publication]
+                SET Title = @Title, Body = @Body, UpdatedDate = @UpdatedDate, CategoryId = @CategoryId
+                WHERE Id = @Id
+            ";
+
+            using var connection = await _dbContext.CreateConnectionAsync();
+            var parameters = new
+            {
+                Id = request.Id,
+                Title = request.Title,
+                Body = request.Body,
+                UpdatedDate = request.UpdatedDate,
+                CategoryId = request.CategoryId
+            };
+
+            var rowsAffected = await connection.ExecuteAsync(sql, parameters);
+            return rowsAffected > 0;
+        }
     }
 }

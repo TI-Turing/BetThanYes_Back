@@ -15,4 +15,4 @@ namespace BetThanYes.Domain.DTOs.Request.Publication
         public int CategoryId { get; set; }
     }
 }
-    
+

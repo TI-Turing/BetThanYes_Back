@@ -27,9 +27,9 @@ namespace BetThanYes.Functions.Functions.Publication
         public async Task<ApiResponse<PublicationResponse>> CreatePublication(
             [HttpTrigger(AuthorizationLevel.Function, "post")] HttpRequestData req)
         {
-            var objResponse = new ApiResponse<PublicationResponse>();
+            var objResponse = new ApiResponse<PublicationResponse>(); 
 
-            try //Intenta
+            try   //Intenta 
             {
                 string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
                 var objRequest = JsonConvert.DeserializeObject<CreatePublicationDto>(requestBody);
