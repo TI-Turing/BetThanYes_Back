@@ -15,6 +15,8 @@ namespace BetThanYes.Infrastructure.Services.Publication
         {
             _dbContext = dbContext;
         }
+        // Este método agrega una nueva publicación a la base de datos
+        // y devuelve el ID de la nueva publicación.
 
         public async Task<Guid> AddAsync(CreatePublicationDto objPublication)
         {
@@ -44,7 +46,8 @@ namespace BetThanYes.Infrastructure.Services.Publication
             return newId;
         }
 
-
+        // Este método obtiene todas las publicaciones
+        // y devuelve una lista de objetos Publication.
 
         public async Task<List<Domain.Models.Publication>> GetAsync()
         {
@@ -52,35 +55,27 @@ namespace BetThanYes.Infrastructure.Services.Publication
                 SELECT * FROM [Publication]
                     
             ";
-
+        
             using var connection = await _dbContext.CreateConnectionAsync();
 
-
-            /*var parameters = new
-            {
-                Id = newId,
-                Ttitle = objPublication.Title,
-                Body = objPublication.Body,
-                CreatedDate = objPublication.CreatedDate,
-                UserId = objPublication.UserId,
-                CategoryId = objPublication.CategoryId
-            };
-*/
 
             var objResult = await connection.QueryAsync<Domain.Models.Publication>(sql);
             return objResult.ToList();
         }
 
+        // Este método obtiene una publicación por su ID
+        // y devuelve un objeto Publication.
 
         public async Task<Domain.Models.Publication?> GetByIdAsync(Guid id)
         {
-            const string sql = @"SELECT * FROM [Publication] WHERE Id = @Id";
+
+            const string sql = @"SELECT * FROM [Publication] WHERE Id = @Id"; 
             using var connection = await _dbContext.CreateConnectionAsync();
             var result = await connection.QuerySingleOrDefaultAsync<Domain.Models.Publication>(sql, new { Id = id });
             return result;
         }
-        // Este m�todo actualiza una publicaci�n existente en la base de datos
-        // y devuelve un valor booleano que indica si la actualizaci�n fue exitosa.
+        // Este m�todo actualiza una publicaci�n existente en la base de datos
+        // y devuelve un valor booleano que indica si la actualizaci�n fue exitosa.
         public async Task<bool> UpdateAsync(UpdatePublicationDto request)
         {
             const string sql = @"
@@ -98,7 +93,6 @@ namespace BetThanYes.Infrastructure.Services.Publication
                 UpdatedDate = request.UpdatedDate,
                 CategoryId = request.CategoryId
             };
-
             var rowsAffected = await connection.ExecuteAsync(sql, parameters);
             return rowsAffected > 0;
         }

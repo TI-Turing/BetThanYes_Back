@@ -1,0 +1,10 @@
+﻿{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated"
+  },
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=tcp:ds-betthanyes.database.windows.net;Database=db-betthanyes;User ID=dev_user; Password=B3thTh4nY3s; Encrypt=True;"
+  }
+}

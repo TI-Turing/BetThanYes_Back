@@ -10,7 +10,7 @@ using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
 
 namespace BetThanYes.Functions.Functions.Auth
-{
+{ 
     public class AuthFunction
     {
         private readonly ILogger<AuthFunction> _logger;

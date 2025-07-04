@@ -71,8 +71,8 @@ namespace BetThanYes.Functions.Functions.Publication
 
             try //Intenta
             {
-            //    string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-               //var objRequest = JsonConvert.DeserializeObject<GetPublicationDto>(requestBody);
+                //    string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+                //var objRequest = JsonConvert.DeserializeObject<GetPublicationDto>(requestBody);
 
                 // if (requestBody == null)
                 // {
@@ -85,7 +85,7 @@ namespace BetThanYes.Functions.Functions.Publication
                 var objResult = await _publicationService.GetAsync();//Lee en Base de Datos
 
                 objResponse.Data = objResult;
-              //  objResponse.Data.Id = objResult;
+                //  objResponse.Data.Id = objResult;
                 objResponse.Success = true;
                 objResponse.Message = "OK";
                 objResponse.StatusCode = StatusCodes.Status200OK;
@@ -93,6 +93,42 @@ namespace BetThanYes.Functions.Functions.Publication
                 return objResponse;
             }
             catch (Exception ex) //Capturar
+            {
+                objResponse.Success = false;
+                objResponse.Message = ex.Message;
+                objResponse.StatusCode = StatusCodes.Status500InternalServerError;
+                return objResponse;
+            }
+        }
+
+        // Lee en Base de Datos por ID
+        [Function("GetPublicationById")]
+        public async Task<ApiResponse<Domain.Models.Publication>> GetPublicationById(
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "publication/{id:guid}")] HttpRequestData req,
+            Guid id)
+        {
+            var objResponse = new ApiResponse<Domain.Models.Publication>();
+
+            try
+            {
+                var publication = await _publicationService.GetByIdAsync(id);
+
+                if (publication == null)
+                {
+                    objResponse.Success = false;
+                    objResponse.Message = "Publicación no encontrada.";
+                    objResponse.StatusCode = StatusCodes.Status404NotFound;
+                    return objResponse;
+                }
+
+                objResponse.Data = publication;
+                objResponse.Success = true;
+                objResponse.Message = "OK";
+                objResponse.StatusCode = StatusCodes.Status200OK;
+
+                return objResponse;
+            }
+            catch (Exception ex)
             {
                 objResponse.Success = false;
                 objResponse.Message = ex.Message;
