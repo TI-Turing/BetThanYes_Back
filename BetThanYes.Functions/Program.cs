@@ -14,6 +14,7 @@ using BetThanYes.Infrastructure.Services.Mail;
 using BetThanYes.Infrastructure.Services.Country;
 using BetThanYes.Infrastructure.Services.Publication;
 using BetThanYes.Infrastructure.Services.Task;
+using BetThanYes.Infrastructure.Services.Comment;
 
 
 
@@ -55,6 +56,10 @@ var host = new HostBuilder()
 
         services.AddScoped<ILoginService, LoginService>();
         services.AddScoped<IPasswordService, PasswordService>();
+
+        services.AddScoped<ICommentService, CommentService>();
+        services.AddScoped<ICommentRepository, CommentRepository >();
+
 
 
         services.AddScoped<IPublicationService, PublicationService>();
